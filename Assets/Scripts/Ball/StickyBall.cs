@@ -8,10 +8,17 @@ public class StickyBall : MonoBehaviour
 	public Vector2 facingDirectionVector;
 	float size = 1;
 
-	CameraController camera;
+	CameraController mainCam;
+	
+    public GameObject category1;
+    bool category1Unlocked = false;
+    public GameObject category2;
+    bool category2Unlocked = false;
+    public GameObject category3;
+    bool category3Unlocked = false;
 
 	void Start() {
-		camera = FindObjectOfType<CameraController>();
+		mainCam = FindObjectOfType<CameraController>();
 	}
 
 	void Update ()
@@ -21,6 +28,7 @@ public class StickyBall : MonoBehaviour
 
 	void FixedUpdate () {
 		Move();
+		UnlockPickupCategory();
 	}
 
 	void Move ()
@@ -46,6 +54,43 @@ public class StickyBall : MonoBehaviour
 		);
 	}
 
+	void UnlockPickupCategory()
+	{
+		if(!category1Unlocked)
+		{
+			if(size >= 1)
+			{
+				category1Unlocked = true;
+				for(int i = 0; i < category1.transform.childCount; i++)
+				{
+					category1.transform.GetChild(i).GetComponent<Collider>().isTrigger = true;
+				}
+			}
+		}
+		if(!category2Unlocked)
+		{
+			if(size >= 1.5f)
+			{
+				category2Unlocked = true;
+				for(int i = 0; i < category2.transform.childCount; i++)
+				{
+					category2.transform.GetChild(i).GetComponent<Collider>().isTrigger = true;
+				}
+			}
+		}
+		if(!category3Unlocked)
+		{
+			if(size >= 2)
+			{
+				category3Unlocked = true;
+				for(int i = 0; i < category3.transform.childCount; i++)
+				{
+					category3.transform.GetChild(i).GetComponent<Collider>().isTrigger = true;
+				}
+			}
+		}
+	}
+
     void OnTriggerEnter(Collider other)
     {
         if(other.transform.CompareTag("Sticky"))
@@ -53,7 +98,7 @@ public class StickyBall : MonoBehaviour
             //Grow the ball
             transform.localScale += new Vector3(.01f, .01f, .01f);
             size += .01f;
-			camera.AddDistanceFromBall(.08f);
+			mainCam.AddDistanceFromBall(.08f);
 			other.enabled = false;
 
 			other.transform.SetParent(this.transform);
