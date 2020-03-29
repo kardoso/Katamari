@@ -9,6 +9,8 @@ public class StickyBall : MonoBehaviour
 	float x = 0;
 	float z = 0;
 	public Vector2 facingDirectionVector;
+	private Rigidbody body;
+	float maxSpeed = 8;
 	float size = 1;
 
 	CameraController mainCam;
@@ -26,6 +28,7 @@ public class StickyBall : MonoBehaviour
 
 	void Start() {
 		mainCam = FindObjectOfType<CameraController>();
+		body = GetComponent<Rigidbody>();
 	}
 
 	void Update ()
@@ -40,13 +43,14 @@ public class StickyBall : MonoBehaviour
 
 	void Move ()
 	{
-		transform.GetComponent<Rigidbody> ().AddForce (
+		body.AddForce (
 			new Vector3 (
 				facingDirectionVector.x,
 				0,
 				facingDirectionVector.y
 			) * z * 2
 		);
+		body.velocity = Vector3.ClampMagnitude(body.velocity, maxSpeed);
 	}
 
 	void UpdateInput ()
@@ -105,6 +109,7 @@ public class StickyBall : MonoBehaviour
             //Grow the ball
             transform.localScale += new Vector3(.01f, .01f, .01f);
             size += .01f;
+			maxSpeed += 0.1f;
 			mainCam.AddDistanceFromBall(.08f);
 			other.enabled = false;
 
