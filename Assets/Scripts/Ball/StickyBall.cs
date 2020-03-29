@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class StickyBall : MonoBehaviour
 {
@@ -16,6 +19,8 @@ public class StickyBall : MonoBehaviour
     bool category2Unlocked = false;
     public GameObject category3;
     bool category3Unlocked = false;
+
+	public TMP_Text sizeUI;
 
 	void Start() {
 		mainCam = FindObjectOfType<CameraController>();
@@ -102,6 +107,8 @@ public class StickyBall : MonoBehaviour
 			other.enabled = false;
 
 			other.transform.SetParent(this.transform);
+
+			sizeUI.GetComponent<TMP_Text>().text = "Mass: " + Math.Round(size, 2);
         }
     }
 }
