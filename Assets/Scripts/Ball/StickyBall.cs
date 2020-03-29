@@ -22,6 +22,8 @@ public class StickyBall : MonoBehaviour
 
 	public TMP_Text sizeUI;
 
+	public AudioClip pickupSound;
+
 	void Start() {
 		mainCam = FindObjectOfType<CameraController>();
 	}
@@ -109,6 +111,8 @@ public class StickyBall : MonoBehaviour
 			other.transform.SetParent(this.transform);
 
 			sizeUI.GetComponent<TMP_Text>().text = "Mass: " + Math.Round(size, 2);
+
+			FindObjectOfType<AudioSource>().PlayOneShot(pickupSound);
         }
     }
 }
