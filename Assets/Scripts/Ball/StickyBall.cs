@@ -6,6 +6,13 @@ public class StickyBall : MonoBehaviour
 	float x = 0;
 	float z = 0;
 	public Vector2 facingDirectionVector;
+	float size = 1;
+
+	CameraController camera;
+
+	void Start() {
+		camera = FindObjectOfType<CameraController>();
+	}
 
 	void Update ()
 	{
@@ -38,4 +45,18 @@ public class StickyBall : MonoBehaviour
 			Mathf.Sin (facingAngle * Mathf.Deg2Rad)
 		);
 	}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.transform.CompareTag("Sticky"))
+        {
+            //Grow the ball
+            transform.localScale += new Vector3(.01f, .01f, .01f);
+            size += .01f;
+			camera.AddDistanceFromBall(.08f);
+			other.enabled = false;
+
+			other.transform.SetParent(this.transform);
+        }
+    }
 }

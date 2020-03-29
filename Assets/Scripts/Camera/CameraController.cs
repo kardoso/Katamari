@@ -5,6 +5,7 @@ public class CameraController : MonoBehaviour
     private StickyBall ball;
     private Vector3 lookAtOffset;
     private float distanceFromBall = 5;
+    private float size = 1;
 
     void Start()
     {
@@ -24,5 +25,10 @@ public class CameraController : MonoBehaviour
             distanceFromBall,
             -ball.facingDirectionVector.y * distanceFromBall
         ) + ball.transform.position;
+    }
+
+    public void AddDistanceFromBall(float distance)
+    {
+        distanceFromBall += distance;
     }
 }
