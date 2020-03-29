@@ -2,12 +2,14 @@
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject ball;
+    private StickyBall ball;
     private Vector3 lookAtOffset;
+    private float distanceFromBall = 5;
 
     void Start()
     {
         lookAtOffset = new Vector3(0, 1.5f, 0);
+        ball = FindObjectOfType<StickyBall>();
     }
 
     void Update()
@@ -15,10 +17,12 @@ public class CameraController : MonoBehaviour
         var ballPos = ball.transform.position;
         transform.LookAt(ballPos + lookAtOffset);
     }
-
     void FixedUpdate()
     {
-        var ballPos = ball.transform.position;
-        transform.position = new Vector3(ballPos.x, ballPos.y + 4, ballPos.z - 4);
+        transform.position = new Vector3(
+            -ball.facingDirectionVector.x * distanceFromBall,
+            distanceFromBall,
+            -ball.facingDirectionVector.y * distanceFromBall
+        ) + ball.transform.position;
     }
 }
